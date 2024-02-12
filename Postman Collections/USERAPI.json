@@ -1,0 +1,2051 @@
+{
+	"info": {
+		"_postman_id": "98978bb0-2bb6-498d-a8a5-a035c565fbc9",
+		"name": "User_Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "e2e test",
+			"item": [
+				{
+					"name": "post create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5f8d9060-bbfe-4879-850e-a539ddc212ba",
+								"exec": [
+									"\r",
+									"var response_statuscode = pm.iterationData.get(\"response status code\");\r",
+									"\r",
+									"pm.test('Expected response', function(){\r",
+									"    pm.response.to.have.status(response_statuscode);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"if (pm.response.code !== 201) {\r",
+									"     postman.setNextRequest(\"next\");\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"const userid = response.user_id;\r",
+									"const firstname = response.user_first_name;\r",
+									"pm.collectionVariables.set(\"createduserid\",userid);\r",
+									"console.log(userid);\r",
+									"pm.collectionVariables.set(\"createdname\",firstname);\r",
+									"console.log(firstname);\r",
+									"\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==201){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"Created\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"        var responseBody = pm.response.json();\r",
+									"        pm.expect(responseBody).to.have.property('user_first_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_last_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_contact_number');\r",
+									"         pm.expect(responseBody).to.have.property('user_email_id');\r",
+									"          pm.expect(responseBody).to.have.property('userAddress');\r",
+									"         if (responseBody.userAddress) {\r",
+									"        pm.expect(responseBody.userAddress).to.have.property(\"plotNumber\");\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('street');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('state');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('country');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('zipCode');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('addressId')\r",
+									"         }\r",
+									"        pm.expect(responseBody).to.have.property('last_mod_time')\r",
+									"        pm.expect(responseBody).to.have.property('user_id');\r",
+									"        \r",
+									" });\r",
+									"\r",
+									"\r",
+									"// const response = pm.response.json();\r",
+									"// const userid = response.user_id;\r",
+									"// const firstname = response.user_first_name;\r",
+									"// pm.collectionVariables.set(\"createduserid\",userid);\r",
+									"// console.log(userid);\r",
+									"// pm.collectionVariables.set(\"createdname\",firstname);\r",
+									"// console.log(firstname);\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(pm.response.code==400){\r",
+									"pm.test(\"Validate Response Body\", function () {\r",
+									"   var  responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody.status).to.eql(pm.iterationData.get(\"status\"));\r",
+									"    pm.expect(responseBody.message).to.eql(pm.iterationData.get(\"message\"));\r",
+									"});\r",
+									"\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "87f01aa8-75b8-4d0d-8382-f02f701f2bd1",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.Street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.Country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: csvData.user_first_name,\r",
+									"    user_last_name: csvData.user_last_name,\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ba20b2c1-2a9a-4c6d-aa87-95fb84005862",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_first_name\": \"{{user_first_name}}\",\r\n    \"user_last_name\": \"{{user_last_name}}\",\r\n    \"user_contact_number\": \"{{user_contact_number}}\",\r\n    \"user_email_id\": \"{{user_email_id}}\",\r\n    \"userAddress\": {\r\n        \"plotNumber\": \"{{plotNumber}}\",\r\n        \"street\": \"{{Street}}\",\r\n        \"state\": \"{{state}}\",\r\n        \"country\": \"{{Country}}\",\r\n        \"zipCode\": \"{{zipCode}}\"\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{Baseurl}}/{{EndPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get allusers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce1edb78-c3d2-44b8-8d46-eb0c411cf1f6",
+								"exec": [
+									"\r",
+									"//Status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//Status line\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//header validation\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"    var responseBody = pm.response.json();\r",
+									"    \r",
+									"    // Iterate over each object in the response body array\r",
+									"    responseBody.forEach(function(user) {\r",
+									"        pm.expect(user).to.have.property('user_first_name');\r",
+									"        pm.expect(user).to.have.property('user_last_name');\r",
+									"        pm.expect(user).to.have.property('user_contact_number');\r",
+									"        pm.expect(user).to.have.property('user_email_id');\r",
+									"        pm.expect(user).to.have.property('userAddress');\r",
+									"\r",
+									"        // Check userAddress properties if userAddress exists\r",
+									"        if (user.userAddress) {\r",
+									"            pm.expect(user.userAddress).to.have.property(\"plotNumber\");\r",
+									"            pm.expect(user.userAddress).to.have.property('street');\r",
+									"            pm.expect(user.userAddress).to.have.property('state');\r",
+									"            pm.expect(user.userAddress).to.have.property('country');\r",
+									"            pm.expect(user.userAddress).to.have.property('zipCode');\r",
+									"            pm.expect(user.userAddress).to.have.property('addressId');\r",
+									"        }\r",
+									"        \r",
+									"        pm.expect(user).to.have.property('last_mod_time');\r",
+									"        pm.expect(user).to.have.property('user_id');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"//Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"array\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "83b8c57a-7367-497e-97ef-6560de835119",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid Url Get allusers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce1edb78-c3d2-44b8-8d46-eb0c411cf1f6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "df29b6ae-7528-432f-94de-ebca27e2fabb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{InvalidUrl}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid endpoint Get allusers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce1edb78-c3d2-44b8-8d46-eb0c411cf1f6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ad034afb-8365-4fd2-8d14-ab8d7991067f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Url and endpoint Get allusers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce1edb78-c3d2-44b8-8d46-eb0c411cf1f6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "588454d0-59ac-4098-8018-6c605aab8ae3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{InvalidUrl}}/{{Invalid_endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b88384cd-ed58-48a9-a4fc-69fcaee471e8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==200){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"        var responseBody = pm.response.json();\r",
+									"        pm.expect(responseBody).to.have.property('user_first_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_last_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_contact_number');\r",
+									"         pm.expect(responseBody).to.have.property('user_email_id');\r",
+									"          pm.expect(responseBody).to.have.property('userAddress');\r",
+									"         if (responseBody.userAddress) {\r",
+									"        pm.expect(responseBody.userAddress).to.have.property(\"plotNumber\");\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('street');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('state');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('country');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('zipCode');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('addressId')\r",
+									"         }\r",
+									"        pm.expect(responseBody).to.have.property('last_mod_time')\r",
+									"        pm.expect(responseBody).to.have.property('user_id');\r",
+									"        \r",
+									" });\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "09e9a535-868b-4b9d-8b3a-170e97af8874",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/user/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid Url  Get user by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b88384cd-ed58-48a9-a4fc-69fcaee471e8",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "969bba86-4d71-4f9d-9a6e-831818edfee2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{InvalidUrl}}/user/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid endpoint Get user by user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b88384cd-ed58-48a9-a4fc-69fcaee471e8",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "9446a88f-4d8e-4787-a182-4f5089b99074",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid user id _Get user by user id Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b88384cd-ed58-48a9-a4fc-69fcaee471e8",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "8cd5faa9-6979-4ac8-86af-2ab71992607a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users/{{invalid_Id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by user first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe69ce41-1988-479d-975f-7be7577c97ab",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==200){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"   pm.test(\"Response body is valid\", function() {\r",
+									"    var responseBody = pm.response.json();\r",
+									"    \r",
+									"    // Iterate over each object in the response body array\r",
+									"    responseBody.forEach(function(user) {\r",
+									"        pm.expect(user).to.have.property('user_first_name');\r",
+									"        pm.expect(user).to.have.property('user_last_name');\r",
+									"        pm.expect(user).to.have.property('user_contact_number');\r",
+									"        pm.expect(user).to.have.property('user_email_id');\r",
+									"        pm.expect(user).to.have.property('userAddress');\r",
+									"\r",
+									"        // Check userAddress properties if userAddress exists\r",
+									"        if (user.userAddress) {\r",
+									"            pm.expect(user.userAddress).to.have.property(\"plotNumber\");\r",
+									"            pm.expect(user.userAddress).to.have.property('street');\r",
+									"            pm.expect(user.userAddress).to.have.property('state');\r",
+									"            pm.expect(user.userAddress).to.have.property('country');\r",
+									"            pm.expect(user.userAddress).to.have.property('zipCode');\r",
+									"            pm.expect(user.userAddress).to.have.property('addressId');\r",
+									"        }\r",
+									"        \r",
+									"        pm.expect(user).to.have.property('last_mod_time');\r",
+									"        pm.expect(user).to.have.property('user_id');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"array\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "82da3df3-cef9-4c91-b67f-4decab0b22c4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users/username/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid Url_Get user by user first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe69ce41-1988-479d-975f-7be7577c97ab",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3f421895-bad4-4183-969d-cac05da9219a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{InvalidUrl}}/users/username/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid endpoint__Get user by user first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe69ce41-1988-479d-975f-7be7577c97ab",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c92a6ae7-0dde-4a85-aaa5-1887d34bcefa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid Url and endpoint__Get user by user first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe69ce41-1988-479d-975f-7be7577c97ab",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3b133813-57a2-486d-8123-e0e8cd459700",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{InvalidUrl}}/{{Invalid_endpoint}}/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "invalid Url and endpoint__Get user by user first name Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe69ce41-1988-479d-975f-7be7577c97ab",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User with userFirstName 124 not found!\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "aba1a6c4-cf39-43d3-b783-432c41c0cb21",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users/username/124"
+					},
+					"response": []
+				},
+				{
+					"name": "update user first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==200){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"        var responseBody = pm.response.json();\r",
+									"        pm.expect(responseBody).to.have.property('user_first_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_last_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_contact_number');\r",
+									"         pm.expect(responseBody).to.have.property('user_email_id');\r",
+									"          pm.expect(responseBody).to.have.property('userAddress');\r",
+									"         if (responseBody.userAddress) {\r",
+									"        pm.expect(responseBody.userAddress).to.have.property(\"plotNumber\");\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('street');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('state');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('country');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('zipCode');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('addressId')\r",
+									"         }\r",
+									"        pm.expect(responseBody).to.have.property('last_mod_time')\r",
+									"        pm.expect(responseBody).to.have.property('user_id');\r",
+									"        \r",
+									" });\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b9f34b07-03bd-43eb-82d2-e8c9cedcc572",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"    \r",
+									"};\r",
+									"console.log(userAddress);\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: pm.collectionVariables.get(\"updated_first_name\"),\r",
+									"    user_last_name: csvData.user_last_name,\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3cbb2dcc-bb39-4fd7-8847-88465a00858c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{updated_first_name}}\",\r\n \"user_last_name\":  \"{{user_last_name}}\",        \r\n  \"user_contact_number\": \"{{user_contact_number}}\",   \r\n  \"user_email_id\": \"{{user_email_id}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{plotNumber}}\",\r\n   \"street\": \"{{Street}}\",\r\n   \"state\": \"{{state}}\",\r\n    \"country\": \"{{Country}}\",\r\n   \"zipCode\": \"{{zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/updateuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "update user last name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==200){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"        var responseBody = pm.response.json();\r",
+									"        pm.expect(responseBody).to.have.property('user_first_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_last_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_contact_number');\r",
+									"         pm.expect(responseBody).to.have.property('user_email_id');\r",
+									"          pm.expect(responseBody).to.have.property('userAddress');\r",
+									"         if (responseBody.userAddress) {\r",
+									"        pm.expect(responseBody.userAddress).to.have.property(\"plotNumber\");\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('street');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('state');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('country');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('zipCode');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('addressId')\r",
+									"         }\r",
+									"        pm.expect(responseBody).to.have.property('last_mod_time')\r",
+									"        pm.expect(responseBody).to.have.property('user_id');\r",
+									"        \r",
+									" });\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b85759c4-87b9-408b-8190-3ce0624c005c",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: csvData.user_first_name,\r",
+									"    user_last_name: pm.collectionVariables.get(\"updated_last_name\"),\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "82fdb183-95fc-46e9-ab2d-cfc24f4eb32f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{user_first_name}}\",\r\n \"user_last_name\":  \"{{updated_last_name}}\",        \r\n  \"user_contact_number\": \"{{user_contact_number}}\",   \r\n  \"user_email_id\": \"{{user_email_id}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{plotNumber}}\",\r\n   \"street\": \"{{Street}}\",\r\n   \"state\": \"{{state}}\",\r\n    \"country\": \"{{Country}}\",\r\n   \"zipCode\": \"{{zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/updateuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "update all values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//status line\r",
+									"if(pm.response.code==200){\r",
+									"pm.test(\"status line \", function () {\r",
+									"    pm.expect(pm.response.status).to.include(\"OK\");\r",
+									"});\r",
+									"\r",
+									"//Validate data\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate data\"),()=>{\r",
+									"    pm.response.to.have.user_first_name(pm.iterationData.get(\"user_first_name\"));\r",
+									"    pm.response.to.have.user_last_name( pm.iterationData.get(\"user_last_name\"));\r",
+									"    pm.response.to.have.user_contact_number(pm.iterationData.get(\"user_contact_number\"));\r",
+									"    pm.response.to.have.user_email_id(pm.iterationData.get(\"user_email_id\"));\r",
+									"    pm.response.to.have.plotNumber(pm.iterationData.get(\"plotNumber\"));\r",
+									"    pm.response.to.have.street(pm.iterationData.get(\"Street\"));\r",
+									"    pm.response.to.have.state(pm.iterationData.get(\"state\"));\r",
+									"    pm.respone.to.have.country(pm.iterationData.get(\"Country\"));\r",
+									"    pm.response.to.have.zipCode(pm.iterationData.get(\"zipCode\"));\r",
+									"    \r",
+									"    };\r",
+									"\r",
+									"// //validating response data\r",
+									"\r",
+									"    pm.test(\"Response body is valid\", function() {\r",
+									"        var responseBody = pm.response.json();\r",
+									"        pm.expect(responseBody).to.have.property('user_first_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_last_name');\r",
+									"         pm.expect(responseBody).to.have.property('user_contact_number');\r",
+									"         pm.expect(responseBody).to.have.property('user_email_id');\r",
+									"          pm.expect(responseBody).to.have.property('userAddress');\r",
+									"         if (responseBody.userAddress) {\r",
+									"        pm.expect(responseBody.userAddress).to.have.property(\"plotNumber\");\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('street');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('state');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('country');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('zipCode');\r",
+									"         pm.expect(responseBody.userAddress).to.have.property('addressId')\r",
+									"         }\r",
+									"        pm.expect(responseBody).to.have.property('last_mod_time')\r",
+									"        pm.expect(responseBody).to.have.property('user_id');\r",
+									"        \r",
+									" });\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// //Schema validation\r",
+									"    const schema = {\r",
+									"        \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userAddress\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"addressId\": { \"type\": \"integer\" },\r",
+									"            \"plotNumber\": { \"type\": \"string\" },\r",
+									"            \"street\": { \"type\": \"string\" },\r",
+									"            \"state\": { \"type\": \"string\" },\r",
+									"            \"country\": { \"type\": \"string\" },\r",
+									"            \"zipCode\": { \"type\": \"integer\" }\r",
+									"        }, \"required\": [\"addressId\", \"plotNumber\", \"street\", \"state\", \"country\", \"zipCode\"]\r",
+									"        },\r",
+									"        \"user_id\": { \"type\": \"integer\" },\r",
+									"        \"user_first_name\": { \"type\": \"string\" },\r",
+									"        \"user_last_name\": { \"type\": \"string\" },\r",
+									"        \"user_contact_number\": { \"type\": \"integer\" },\r",
+									"        \"user_email_id\": { \"type\": \"string\" },\r",
+									"        \"creation_time\": { \"type\": \"string\" },\r",
+									"        \"last_mod_time\": { \"type\": \"string\" }\r",
+									"    },\"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\", \"creation_time\", \"last_mod_time\"]\r",
+									"    }\r",
+									"\r",
+									"\r",
+									"\r",
+									"    pm.test('Validate schema',()=>{\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b85759c4-87b9-408b-8190-3ce0624c005c",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: pm.collectionVariables.get(\"updated_first_name\"),\r",
+									"    user_last_name: pm.collectionVariables.get(\"updated_last_name\"),\r",
+									"    user_contact_number: pm.collectionVariables.get(\"updated_number\"),\r",
+									"    user_email_id: pm.collectionVariables.get(\"updated_emailid\"),\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "d3db7b37-8183-41ac-9bb9-dbcf6c3e05ab",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{updated_first_name}}\",\r\n \"user_last_name\":  \"{{updated_last_name}}\",        \r\n  \"user_contact_number\": \"{{phonenumber}}\",   \r\n  \"user_email_id\": \"{{updated_emailid}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{updated_plotnumber}}\",\r\n   \"street\": \"{{updated_street}}\",\r\n   \"state\": \"{{updated_state}}\",\r\n    \"country\": \"{{updated_country}}\",\r\n   \"zipCode\": \"{{updated_zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/updateuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Url_update all values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b85759c4-87b9-408b-8190-3ce0624c005c",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: csvData.user_first_name,\r",
+									"    user_last_name: csvData.user_last_name,\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "7789968f-1832-42bc-9dbb-f7a96005e475",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{updated_first_name}}\",\r\n \"user_last_name\":  \"{{updated_last_name}}\",        \r\n  \"user_contact_number\": \"{{phonenumber}}\",   \r\n  \"user_email_id\": \"{{$randomEmail}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{updated_plotnumber}}\",\r\n   \"street\": \"{{updated_street}}\",\r\n   \"state\": \"{{updated_state}}\",\r\n    \"country\": \"{{updated_country}}\",\r\n   \"zipCode\": \"{{updated_zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{InvalidUrl}}/updateuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid endpoint_update all values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b85759c4-87b9-408b-8190-3ce0624c005c",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: csvData.user_first_name,\r",
+									"    user_last_name: csvData.user_last_name,\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "a565f1c8-4fb0-45bb-af0a-09f166788d20",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{updated_first_name}}\",\r\n \"user_last_name\":  \"{{updated_last_name}}\",        \r\n  \"user_contact_number\": \"{{phonenumber}}\",   \r\n  \"user_email_id\": \"{{$randomEmail}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{updated_plotnumber}}\",\r\n   \"street\": \"{{updated_street}}\",\r\n   \"state\": \"{{updated_state}}\",\r\n    \"country\": \"{{updated_country}}\",\r\n   \"zipCode\": \"{{updated_zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid id_update all values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e882f98-3a9e-4c3f-a058-bc107de3b884",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Bad Request\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b85759c4-87b9-408b-8190-3ce0624c005c",
+								"exec": [
+									"// Parse CSV data\r",
+									"const csvData = pm.iterationData.toObject();\r",
+									"const userAddress = {\r",
+									"    plotNumber: csvData.plotNumber === 'null' ? null : csvData.plotNumber,\r",
+									"    street: csvData.street === 'null' ? null : csvData.Street,\r",
+									"    state: csvData.state === 'null' ? null : csvData.state,\r",
+									"    country: csvData.country === 'null' ? null : csvData.Country,\r",
+									"    zipCode: csvData.zipCode === 'null' ? null : csvData.zipCode\r",
+									"};\r",
+									"\r",
+									"// Construct request body\r",
+									"const requestBody = {\r",
+									"    user_first_name: csvData.user_first_name,\r",
+									"    user_last_name: csvData.user_last_name,\r",
+									"    user_contact_number: csvData.user_contact_number,\r",
+									"    user_email_id: csvData.user_email_id,\r",
+									"    userAddress: userAddress\r",
+									"};\r",
+									"\r",
+									"// Set request body\r",
+									"pm.request.body.raw = JSON.stringify(requestBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "2119a878-0f87-4b9a-a19f-a736035a1c75",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"user_first_name\":  \"{{updated_first_name}}\",\r\n \"user_last_name\":  \"{{updated_last_name}}\",        \r\n  \"user_contact_number\": \"{{phonenumber}}\",   \r\n  \"user_email_id\": \"{{$randomEmail}}\",\r\n\r\n\"userAddress\": {\r\n   \"plotNumber\": \"{{updated_plotnumber}}\",\r\n   \"street\": \"{{updated_street}}\",\r\n   \"state\": \"{{updated_state}}\",\r\n    \"country\": \"{{updated_country}}\",\r\n   \"zipCode\": \"{{updated_zipCode}}\"\r\n }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/updateuser/{{invalid_Id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//header validation\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// if (pm.response.code === 200) {\r",
+									"//     postman.setNextRequest(\"null\");\r",
+									"// } else {\r",
+									"//     postman.setNextRequest(\"next\");\r",
+									"// }\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate Response Body\", function () {\r",
+									"   var  responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody.status).to.eql(\"Success\");\r",
+									"    pm.expect(responseBody.message).to.eql(\"User is deleted successfully\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "85808bf3-69d5-4da3-9fdd-4d8e8ce17da0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/deleteuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Url_delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"// if (pm.response.code === 200) {\r",
+									"//     postman.setNextRequest(\"null\");\r",
+									"// } else {\r",
+									"//     postman.setNextRequest(\"next\");\r",
+									"// }\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "e4aa9539-73ee-4a27-a6f3-337152874a21",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{InvalidUrl}}/deleteuser/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid endpoint_delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"// if (pm.response.code === 200) {\r",
+									"//     postman.setNextRequest(\"null\");\r",
+									"// } else {\r",
+									"//     postman.setNextRequest(\"next\");\r",
+									"// }\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "f77603f9-b5d3-4f6c-b58f-e6d7401aaa3b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{createduserid}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid id_delete user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"// if (pm.response.code === 200) {\r",
+									"//     postman.setNextRequest(\"null\");\r",
+									"// } else {\r",
+									"//     postman.setNextRequest(\"next\");\r",
+									"// }\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Bad Request\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "b673b58e-80c4-4dfc-a0d4-fd57c95411a5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/deleteuser/{{invalid_Id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "delete user by first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate Response Body\", function () {\r",
+									"   var  responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseBody.status).to.eql(\"Success\");\r",
+									"    pm.expect(responseBody.message).to.eql(\"User is deleted successfully\");\r",
+									"});\r",
+									"\r",
+									"//header validation\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "fa3309bd-dd94-4bc3-8982-6b81e799c059",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/deleteuser/username/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Url_delete user by first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "089aa533-0380-40b9-96ae-bebf72c954b1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{InvalidUrl}}/deleteuser/username/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid endpoint_delete user by first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "44cf9112-50d8-43e2-818a-220bf8dc45d4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{createdname}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid firstname_delete user by first name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd02b940-4ab5-4559-8271-3a2c8285522e",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type should be application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");\r",
+									"});\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"Not Found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "d9e30f5c-ea07-482d-8827-961b2ad26689",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseUrl}}/{{Invalid_endpoint}}/{{invalidname}}"
+					},
+					"response": []
+				}
+			],
+			"id": "e2c5ed1c-d779-436f-8f67-79b1ab5cf85b"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3978f994-f603-4d5e-aabe-90275d4a5dda",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ee9341a0-bf83-4285-acf9-2266cba39fa7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": "Numpy@gmail.com"
+		},
+		{
+			"key": "password",
+			"value": "tim123"
+		},
+		{
+			"key": "BaseUrl",
+			"value": "https://userapi-8877aadaae71.herokuapp.com/uap"
+		},
+		{
+			"key": "InvalidUrl",
+			"value": "https://userapi-8877aadaae71.herokuapp.com"
+		},
+		{
+			"key": "createduserid",
+			"value": ""
+		},
+		{
+			"key": "updated_first_name",
+			"value": "Julia",
+			"type": "string"
+		},
+		{
+			"key": "createdname",
+			"value": ""
+		},
+		{
+			"key": "plotNumber",
+			"value": ""
+		},
+		{
+			"key": "updated_last_name",
+			"value": "Don",
+			"type": "string"
+		},
+		{
+			"key": "teamname",
+			"value": ""
+		},
+		{
+			"key": "serialnumber",
+			"value": ""
+		},
+		{
+			"key": "FirstName",
+			"value": ""
+		},
+		{
+			"key": "LastName",
+			"value": ""
+		},
+		{
+			"key": "phonenumber",
+			"value": ""
+		},
+		{
+			"key": "Invaid_Url",
+			"value": "https://herokuapp.com"
+		},
+		{
+			"key": "Invalid_endpoint",
+			"value": "abc"
+		},
+		{
+			"key": "invalid_Id",
+			"value": "ab"
+		},
+		{
+			"key": "updated_plotnumber",
+			"value": "df-56",
+			"type": "string"
+		},
+		{
+			"key": "updated_state",
+			"value": "Nj",
+			"type": "string"
+		},
+		{
+			"key": "updated_street",
+			"value": "court dr",
+			"type": "string"
+		},
+		{
+			"key": "updated_country",
+			"value": "USA",
+			"type": "string"
+		},
+		{
+			"key": "updated_zipCode",
+			"value": "78965",
+			"type": "string"
+		},
+		{
+			"key": "invalidname",
+			"value": "123"
+		},
+		{
+			"key": "updated_emailid",
+			"value": "tom178@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "updated_number",
+			"value": "6757879737",
+			"type": "string"
+		}
+	]
+}
