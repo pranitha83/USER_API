@@ -1823,6 +1823,19 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "24516c06-9d23-4137-bdec-eb40c1b6f0bb",
+								"exec": [
+									"// if(pm.collectionVariables.get(\"createdname\"==null)){\r",
+									"//     postman.setNextRequest(\"post create user\");\r",
+									"\r",
+									"// }"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"id": "fa3309bd-dd94-4bc3-8982-6b81e799c059",
